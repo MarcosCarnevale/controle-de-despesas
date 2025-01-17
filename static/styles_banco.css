@@ -1,0 +1,79 @@
+/* Form grid styles */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-size: 1rem;
+    color: #555;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="date"],
+.form-group select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.form-group input[type="submit"] {
+    background: #0078d4;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+    grid-column: span 3;
+}
+
+.form-group input[type="submit"]:hover {
+    background: #005bb5;
+}
+
+/* Table styles */
+.bancos-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.bancos-table th, .bancos-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.bancos-table th {
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+.bancos-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.bancos-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.bancos-table td a, .bancos-table td button {
+    margin-right: 10px;
+    color: #0078d4;
+    text-decoration: none;
+}
+
+.bancos-table td a:hover, .bancos-table td button:hover {
+    color: #005bb5;
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_system.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="{{ url_for('auth.home') }}">Início</a></li>
+            <li><a href="{{ url_for('pagamento.cadastrar_pagamento') }}">Cadastrar Pagamento</a></li>
+            <li><a href="{{ url_for('banco.cadastrar_banco') }}">Cadastrar Banco</a></li>
+            <li><a href="{{ url_for('categoria.cadastrar_categoria') }}">Cadastrar Categoria</a></li>
+            <li><a href="{{ url_for('cartao.cadastrar_cartao') }}">Cadastrar Cartão</a></li>
+            <li>
+                <form action="{{ url_for('auth.logout') }}" method="post" style="display: inline;">
+                    <input type="submit" value="Logout" style="background: none; border: none; color: #0078d4; cursor: pointer; text-align: left; padding: 0;">
+                </form>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        <h1>Dashboard</h1>
+        <div>
+            <label for="categoria">Filtrar por Categoria:</label>
+            <select id="categoria" name="categoria" onchange="updateChart()">
+                <option value="">Todas</option>
+                {% for categoria in categorias %}
+                    <option value="{{ categoria[0] }}">{{ categoria[0] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <canvas id="despesasChart" width="400" height="200"></canvas>
+    </div>
+    <script>
+        const ctx = document.getElementById('despesasChart').getContext('2d');
+        let despesasChart;
+
+        function updateChart() {
+            const categoria = document.getElementById('categoria').value;
+            fetch(`/despesas_por_mes?categoria=${categoria}`)
+                .then(response => response.json())
+                .then(data => {
+                    const labels = data.map(item => item.mes);
+                    const valores = data.map(item => item.valor);
+
+                    if (despesasChart) {
+                        despesasChart.destroy();
+                    }
+
+                    despesasChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Despesas',
+                                data: valores,
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateChart();
+        });
+    </script>
+</body>
+</html>

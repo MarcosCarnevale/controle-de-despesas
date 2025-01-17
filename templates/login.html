@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <form id="loginForm" action="/login" method="post">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Digite seu email" required>
+            
+            <label for="senha">Senha</label>
+            <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+            
+            <div id="error-message" style="color: rgb(34, 33, 33); font-size: 14px;">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <p class="{{ category }}">{{ message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            
+            <input type="submit" value="Login">
+        </form>
+        <p>Não tem uma conta? <a href="{{ url_for('auth.cadastrar_usuario') }}">Cadastrar Usuário</a></p>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/valida_senha.js') }}"></script>
+</body>
+</html>

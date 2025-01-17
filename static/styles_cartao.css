@@ -1,0 +1,78 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    display: flex;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #343a40;
+    padding: 15px;
+    height: 100vh;
+    position: fixed;
+}
+
+.sidebar h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.sidebar ul {
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar ul li {
+    margin-bottom: 1rem;
+}
+
+.sidebar ul li a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline;
+}
+
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    margin-left: 250px;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.table-responsive {
+    margin-top: 2rem;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+}
+
+.table td:last-child {
+    text-align: center;
+}
+
+.btn {
+    margin-right: 5px;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    border-radius: 0.25rem;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+}

@@ -1,0 +1,15 @@
+# Contas a Pagar
+
+O projeto contas a pagar é um sistema de controle de contas a pagar, onde é possível cadastrar, editar, excluir e visualizar contas a pagar.
+
+## Banco de dados
+
+O banco de dados utilizado é o SQLite, que é um banco de dados relacional que não necessita de um servidor para funcionar.
+
+## Tela de Login
+
+Desenvolver uma tela de login onde o usuário informa o e-mail e a senha para acessar o sistema.
+
+- usuário e senha devem ser validados no banco de dados
+
+- desenvolver a tela usando html, css e javascript

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Pagamento</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_system.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Editar Pagamento</h1>
+        <form action="{{ url_for('pagamento.editar_pagamento', id=pagamento[0]) }}" method="post">
+            <div class="form-group">
+                <label for="descricao">Descrição</label>
+                <input type="text" id="descricao" name="descricao" class="form-control" value="{{ pagamento[1] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="valor">Valor</label>
+                <input type="number" id="valor" name="valor" class="form-control" value="{{ pagamento[2] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="data">Data</label>
+                <input type="date" id="data" name="data" class="form-control" value="{{ pagamento[3] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="categoria">Categoria</label>
+                <select id="categoria" name="categoria" class="form-control" required onchange="updateSubcategorias()">
+                    <option value="">Selecione uma categoria</option>
+                    {% for categoria in categorias %}
+                        <option value="{{ categoria[0] }}" {% if categoria[0] == pagamento[4] %}selected{% endif %}>{{ categoria[0] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="subcategoria">Subcategoria</label>
+                <select id="subcategoria" name="subcategoria" class="form-control" required>
+                    <option value="">Selecione uma subcategoria</option>
+                    {% for subcategoria in subcategorias %}
+                        <option value="{{ subcategoria[1] }}" {% if subcategoria[1] == pagamento[5] %}selected{% endif %}>{{ subcategoria[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="banco">Banco</label>
+                <select id="banco" name="banco" class="form-control" required>
+                    <option value="">Selecione um banco</option>
+                    {% for banco in bancos %}
+                        <option value="{{ banco[1] }}" {% if banco[1] == pagamento[6] %}selected{% endif %}>{{ banco[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="cartao">Cartão</label>
+                <select id="cartao" name="cartao" class="form-control">
+                    {% for cartao in cartoes %}
+                        <option value="{{ cartao }}" {% if cartao == pagamento[9] %}selected{% endif %}>{{ cartao }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a href="{{ url_for('pagamento.cadastrar_pagamento') }}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function updateSubcategorias() {
+            const categoria = document.getElementById('categoria').value;
+            const subcategorias = JSON.parse(document.getElementById('subcategorias-data').textContent);
+            const subcategoriaSelect = document.getElementById('subcategoria');
+            subcategoriaSelect.innerHTML = '<option value="">Selecione uma subcategoria</option>';
+            subcategorias.forEach(function(item) {
+                if (item[0] === categoria) {
+                    const option = document.createElement('option');
+                    option.value = item[1];
+                    option.textContent = item[1];
+                    subcategoriaSelect.appendChild(option);
+                }
+            });
+        }
+    </script>
+    {% if subcategorias is defined %}
+    <script id="subcategorias-data" type="application/json">{{ subcategorias | tojson }}</script>
+    {% endif %}
+</body>
+</html>

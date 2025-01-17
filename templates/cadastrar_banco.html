@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Banco</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_system.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_banco.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="{{ url_for('auth.home') }}">Início</a></li>
+            <li><a href="{{ url_for('pagamento.cadastrar_pagamento') }}">Cadastrar Pagamento</a></li>
+            <li><a href="{{ url_for('banco.cadastrar_banco') }}">Cadastrar Banco</a></li>
+            <li><a href="{{ url_for('categoria.cadastrar_categoria') }}">Cadastrar Categoria</a></li>
+            <li><a href="{{ url_for('cartao.cadastrar_cartao') }}">Cadastrar Cartão</a></li>
+            <li>
+                <form action="{{ url_for('auth.logout') }}" method="post" style="display: inline;">
+                    <input type="submit" value="Logout" style="background: none; border: none; color: #0078d4; cursor: pointer; text-align: left; padding: 0;">
+                </form>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        <h1>Cadastrar Banco</h1>
+        <form id="cadastroBancoForm" action="{{ url_for('banco.cadastrar_banco') }}" method="post" class="form-grid">
+            <div class="form-group">
+                <label for="nome_banco">Nome do Banco</label>
+                <input type="text" id="nome_banco" name="nome_banco" placeholder="Digite o nome do banco" required>
+            </div>
+            <div class="form-group">
+                <label for="numero_banco">Número do Banco</label>
+                <input type="text" id="numero_banco" name="numero_banco" placeholder="Digite o número do banco" required>
+            </div>
+            <div class="form-group">
+                <label for="agencia">Agência</label>
+                <input type="text" id="agencia" name="agencia" placeholder="Digite a agência" required>
+            </div>
+            <div class="form-group">
+                <label for="conta">Conta</label>
+                <input type="text" id="conta" name="conta" placeholder="Digite a conta" required>
+            </div>
+            <div class="form-group">
+                <label for="dv">DV</label>
+                <input type="text" id="dv" name="dv" placeholder="Digite o DV" required>
+            </div>
+            <div class="form-group">
+                <label for="tipo_conta">Tipo de Conta</label>
+                <select id="tipo_conta" name="tipo_conta" required>
+                    <option value="corrente">Corrente</option>
+                    <option value="poupanca">Poupança</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Cadastrar">
+            </div>
+        </form>
+
+        <h2>Bancos Cadastrados</h2>
+        <table class="bancos-table">
+            <thead>
+                <tr>
+                    <th>Nome do Banco</th>
+                    <th>Número do Banco</th>
+                    <th>Agência</th>
+                    <th>Conta</th>
+                    <th>DV</th>
+                    <th>Tipo de Conta</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for banco in bancos %}
+                <tr>
+                    <td>{{ banco[1] }}</td>
+                    <td>{{ banco[2] }}</td>
+                    <td>{{ banco[3] }}</td>
+                    <td>{{ banco[4] }}</td>
+                    <td>{{ banco[5] }}</td>
+                    <td>{{ banco[6] }}</td>
+                    <td>
+                        <a href="{{ url_for('banco.editar_banco', id=banco[0]) }}" title="Editar"><i class="fas fa-edit"></i></a>
+                        <form action="{{ url_for('banco.excluir_banco', id=banco[0]) }}" method="post" style="display:inline;">
+                            <button type="submit" style="background: none; border: none; color: inherit; cursor: pointer;" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir este banco?');">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

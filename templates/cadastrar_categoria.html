@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Categoria</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_system.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_categoria.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="{{ url_for('auth.home') }}">Início</a></li>
+            <li><a href="{{ url_for('pagamento.cadastrar_pagamento') }}">Cadastrar Pagamento</a></li>
+            <li><a href="{{ url_for('banco.cadastrar_banco') }}">Cadastrar Banco</a></li>
+            <li><a href="{{ url_for('categoria.cadastrar_categoria') }}">Cadastrar Categoria</a></li>
+            <li><a href="{{ url_for('cartao.cadastrar_cartao') }}">Cadastrar Cartão</a></li>
+            <li>
+                <form action="{{ url_for('auth.logout') }}" method="post" style="display: inline;">
+                    <input type="submit" value="Logout" style="background: none; border: none; color: #0078d4; cursor: pointer; text-align: left; padding: 0;">
+                </form>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        <h1>Cadastrar Categoria</h1>
+        <form id="cadastroCategoriaForm" action="/cadastrar_categoria" method="post" class="form-grid">
+            <div class="form-group">
+                <label for="operacao">Operação</label>
+                <select id="operacao" name="operacao" required>
+                    <option value="receita">Receita</option>
+                    <option value="despesa">Despesa</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="categoria">Categoria</label>
+                <input type="text" id="categoria" name="categoria" placeholder="Digite a categoria" required>
+            </div>
+            <div class="form-group">
+                <label for="subcategoria">Subcategoria</label>
+                <input type="text" id="subcategoria" name="subcategoria" placeholder="Digite a subcategoria" required>
+            </div>
+            <div class="form-group">
+                <label for="descricao">Descrição</label>
+                <input type="text" id="descricao" name="descricao" placeholder="Digite a descrição" required>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Cadastrar">
+            </div>
+        </form>
+
+        <h2>Categorias Cadastradas</h2>
+        <table class="categorias-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Operação</th>
+                    <th>Categoria</th>
+                    <th>Subcategoria</th>
+                    <th>Descrição</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for categoria in categorias %}
+                <tr>
+                    <td>{{ categoria[0] }}</td>
+                    <td>{{ categoria[1] }}</td>
+                    <td>{{ categoria[2] }}</td>
+                    <td>{{ categoria[3] }}</td>
+                    <td>{{ categoria[4] }}</td>
+                    <td>
+                        <a href="{{ url_for('categoria.editar_categoria', id=categoria[0]) }}" title="Editar"><i class="fas fa-edit"></i></a>
+                        <form action="{{ url_for('categoria.excluir_categoria', id=categoria[0]) }}" method="post" style="display:inline;">
+                            <button type="submit" style="background: none; border: none; color: inherit; cursor: pointer;" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir esta categoria?');">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

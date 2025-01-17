@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Categoria</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_system.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_categoria.css') }}">
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="{{ url_for('auth.home') }}">Início</a></li>
+            <li><a href="{{ url_for('pagamento.cadastrar_pagamento') }}">Cadastrar Pagamento</a></li>
+            <li><a href="{{ url_for('categoria.cadastrar_categoria') }}">Cadastrar Categoria</a></li>
+            <li>
+                <form action="{{ url_for('auth.logout') }}" method="post" style="display: inline;">
+                    <input type="submit" value="Logout" style="background: none; border: none; color: #0078d4; cursor: pointer; text-align: left; padding: 0;">
+                </form>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        <h1>Editar Categoria</h1>
+        <form id="editarCategoriaForm" action="{{ url_for('categoria.editar_categoria', id=id) }}" method="post" class="form-grid">
+            <div class="form-group">
+                <label for="operacao">Operação</label>
+                <select id="operacao" name="operacao" required>
+                    <option value="receita" {% if categoria[0] == 'receita' %}selected{% endif %}>Receita</option>
+                    <option value="despesa" {% if categoria[0] == 'despesa' %}selected{% endif %}>Despesa</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="categoria">Categoria</label>
+                <input type="text" id="categoria" name="categoria" value="{{ categoria[1] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="subcategoria">Subcategoria</label>
+                <input type="text" id="subcategoria" name="subcategoria" value="{{ categoria[2] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="descricao">Descrição</label>
+                <input type="text" id="descricao" name="descricao" value="{{ categoria[3] }}" required>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Salvar">
+            </div>
+        </form>
+    </div>
+</body>
+</html>
