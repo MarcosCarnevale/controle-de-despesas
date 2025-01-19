@@ -89,7 +89,7 @@
                                         <button class="btn btn-sm btn-info" onclick="document.getElementById('fileInput{{ pagamento[0] }}').click()" title="Anexar Arquivo">
                                             <i class="fas fa-paperclip"></i>
                                         </button>
-                                        <input type="file" id="fileInput{{ pagamento[0] }}" style="display: none;" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                        <input type="file" id="fileInput{{ pagamento[0] }}" name="arquivo" style="display: none;" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onchange="salvarAnexo(event, {{ pagamento[0] }})">
                                     </td>
                                 </tr>
                                 {% endfor %}

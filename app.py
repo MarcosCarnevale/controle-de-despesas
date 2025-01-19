@@ -49,6 +49,17 @@ def create_tables():
             data_vencimento TEXT NOT NULL
         )
     ''')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS anexos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            pagamento_id INTEGER NOT NULL,
+            data_upload TEXT NOT NULL,
+            tipo_arquivo TEXT NOT NULL,
+            tamanho_arquivo INTEGER NOT NULL,
+            arquivo BLOB NOT NULL,
+            FOREIGN KEY (pagamento_id) REFERENCES pagamentos (id)
+        )
+    ''')
     conn.commit()
     conn.close()
 
