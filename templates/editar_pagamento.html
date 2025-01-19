@@ -44,7 +44,7 @@
             </div>
             <div class="form-group">
                 <label for="banco">Banco</label>
-                <select id="banco" name="banco" class="form-control" required>
+                <select id="banco" name="banco" class="form-control">
                     <option value="">Selecione um banco</option>
                     {% for banco in bancos %}
                         <option value="{{ banco[1] }}" {% if banco[1] == pagamento[6] %}selected{% endif %}>{{ banco[1] }}</option>

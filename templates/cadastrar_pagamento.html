@@ -52,6 +52,7 @@
                             <thead>
                                 <tr>
                                     <th><input type="checkbox" id="selectAll"></th>
+                                    <th>ID</th>
                                     <th>Descrição</th>
                                     <th>Valor</th>
                                     <th>Data</th>
@@ -69,6 +70,7 @@
                                 {% for pagamento in pagamentos %}
                                 <tr data-id="{{ pagamento[0] }}">
                                     <td><input type="checkbox" class="select-item" value="{{ pagamento[0] }}"></td>
+                                    <td>{{ pagamento[0] }}</td>
                                     <td>{{ pagamento[1] }}</td>
                                     <td class="valor">{{ pagamento[2] }}</td>
                                     <td>{{ pagamento[3] }}</td>
