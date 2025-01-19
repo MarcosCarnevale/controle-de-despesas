@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_login.css') }}">
 </head>
 <body>
     <div class="container">
@@ -16,7 +16,7 @@
             <label for="senha">Senha</label>
             <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
             
-            <div id="error-message" style="color: rgb(34, 33, 33); font-size: 14px;">
+            <div id="error-message">
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
                         {% for category, message in messages %}

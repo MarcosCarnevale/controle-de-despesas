@@ -48,17 +48,20 @@ body {
 
 .content-wrapper {
     flex-grow: 1;
-    /* overflow: auto; */
     padding: 20px;
+    overflow: hidden; /* Remove barras de rolagem */
+    height: 100vh; /* Ajusta a altura para ocupar a tela inteira menos o padding */
+    width: calc(100vw - 250px); /* Ajusta a largura para ocupar a tela inteira menos a largura da barra lateral */
+    box-sizing: border-box; /* Inclui padding e border na altura total */
+    max-width: calc(100vw - 250px); /* Expande até o limite da tela menos a largura da barra lateral */
 }
 
 .content {
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin: 20px;
+    max-width: calc(100vw -250px);
     padding: 20px;
-    max-width: 80%;
 }
 
 .actions {
@@ -112,9 +115,8 @@ body {
 /* Table container styles */
 .table-container {
     margin-top: 20px;
-    overflow-x: scroll;
-    max-width: 90%;
-    
+    /* overflow-x: scroll; */
+    max-width: 100%;
 }
 
 .table-responsive {
