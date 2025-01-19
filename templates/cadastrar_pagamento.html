@@ -72,14 +72,24 @@
                                     <td>{{ pagamento[9] if pagamento[9] is not none else '' }}</td>
                                     <td>{{ pagamento[10] }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-success" onclick="atualizarStatus({{ pagamento[0] }}, 'Pago')">Pagar conta</button>
-                                        <button class="btn btn-sm btn-secondary" onclick="atualizarStatus({{ pagamento[0] }}, 'Em Aberto')">Abrir conta</button>
-                                        <a href="{{ url_for('pagamento.editar_pagamento', id=pagamento[0]) }}" class="btn btn-sm btn-warning" title="Editar"><i class="fas fa-edit"></i></a>
+                                        <button class="btn btn-sm btn-success" onclick="atualizarStatus({{ pagamento[0] }}, 'Pago')" title="Pagar conta">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-secondary" onclick="atualizarStatus({{ pagamento[0] }}, 'Em Aberto')" title="Abrir conta">
+                                            <i class="fas fa-undo"></i>
+                                        </button>
+                                        <a href="{{ url_for('pagamento.editar_pagamento', id=pagamento[0]) }}" class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
                                         <form action="{{ url_for('pagamento.excluir_pagamento', id=pagamento[0]) }}" method="post" style="display:inline;">
                                             <button type="submit" class="btn btn-sm btn-danger" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir este pagamento?');">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>
+                                        <button class="btn btn-sm btn-info" onclick="document.getElementById('fileInput{{ pagamento[0] }}').click()" title="Anexar Arquivo">
+                                            <i class="fas fa-paperclip"></i>
+                                        </button>
+                                        <input type="file" id="fileInput{{ pagamento[0] }}" style="display: none;" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -102,7 +112,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="cadastroPagamentoForm" action="{{ url_for('pagamento.cadastrar_pagamento') }}" method="post">
+                    <form id="cadastroPagamentoForm" action="{{ url_for('pagamento.cadastrar_pagamento') }}" method="post" enctype="multipart/form-data">
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="descricao">Descrição</label>
@@ -169,6 +179,12 @@
                                         <option value="{{ cartao }}">{{ cartao }}</option>
                                     {% endfor %}
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="anexo"><i class="fas fa-paperclip"></i> Anexar Arquivo</label>
+                                <input type="file" id="anexo" name="anexo" class="form-control" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
                             </div>
                         </div>
                         <div class="modal-footer">
