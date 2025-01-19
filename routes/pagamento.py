@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, session, redirect, url_for, request, flash, jsonify
+from flask import Blueprint, render_template, session, redirect, url_for, request, flash, jsonify, send_file
 import sqlite3
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
+import io
 
 pagamento_bp = Blueprint('pagamento', __name__)
 
@@ -251,3 +252,22 @@ def salvar_anexo():
     conn.close()
 
     return jsonify({'success': True, 'message': 'Anexo salvo com sucesso!'})
+
+@pagamento_bp.route('/download_anexo/<int:id>')
+def download_anexo(id):
+    conn = sqlite3.connect('./contas_a_pagar/cnt_a_pg.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT arquivo, tipo_arquivo FROM anexos WHERE pagamento_id = ?', (id,))
+    anexo = cursor.fetchone()
+    conn.close()
+
+    if anexo and anexo[0]:
+        return send_file(
+            io.BytesIO(anexo[0]),
+            mimetype=anexo[1],
+            as_attachment=True,
+            attachment_filename=f'anexo_{id}.{anexo[1].split("/")[-1]}'  # Define o nome do arquivo com base no tipo de arquivo
+        )
+    else:
+        flash('Anexo não encontrado.', 'danger')
+        return redirect(url_for('pagamento.cadastrar_pagamento'))

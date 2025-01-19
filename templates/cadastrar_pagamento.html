@@ -89,7 +89,13 @@
                                         <button class="btn btn-sm btn-info" onclick="document.getElementById('fileInput{{ pagamento[0] }}').click()" title="Anexar Arquivo">
                                             <i class="fas fa-paperclip"></i>
                                         </button>
-                                        <input type="file" id="fileInput{{ pagamento[0] }}" name="arquivo" style="display: none;" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onchange="salvarAnexo(event, {{ pagamento[0] }})">
+                                        <form action="{{ url_for('pagamento.salvar_anexo') }}" method="post" enctype="multipart/form-data" style="display:inline;">
+                                            <input type="hidden" name="pagamento_id" value="{{ pagamento[0] }}">
+                                            <input type="file" id="fileInput{{ pagamento[0] }}" name="arquivo" style="display: none;" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onchange="salvarAnexo(event, {{ pagamento[0] }})">
+                                        </form>
+                                        <button class="btn btn-sm btn-primary" onclick="downloadAnexo({{ pagamento[0] }})" title="Baixar Anexo">
+                                            <i class="fas fa-download"></i>
+                                        </button>
                                     </td>
                                 </tr>
                                 {% endfor %}

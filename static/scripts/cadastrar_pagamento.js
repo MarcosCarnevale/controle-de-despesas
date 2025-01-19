@@ -84,3 +84,28 @@ function salvarAnexo(event, pagamentoId) {
         alert('Erro ao salvar anexo');
     });
 }
+
+function downloadAnexo(pagamentoId) {
+    fetch(`/download_anexo/${pagamentoId}`)
+        .then(response => {
+            if (response.ok) {
+                return response.blob();
+            } else {
+                throw new Error('Erro ao baixar anexo');
+            }
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `anexo_${pagamentoId}.pdf`; // Ajuste o nome do arquivo conforme necessário
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao baixar anexo');
+        });
+}
