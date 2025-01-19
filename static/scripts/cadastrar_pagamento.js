@@ -117,10 +117,15 @@ function downloadAnexo(pagamentoId) {
         });
 }
 
+function getSelectedIds() {
+    const checkboxes = document.querySelectorAll('.select-item:checked');
+    return Array.from(checkboxes).map(checkbox => checkbox.value);
+}
+
 function apagarSelecao() {
-    const selectedIds = Array.from(document.querySelectorAll('.select-item:checked')).map(checkbox => checkbox.value);
+    const selectedIds = getSelectedIds();
     if (selectedIds.length === 0) {
-        alert('Nenhum pagamento selecionado.');
+        alert('Nenhum pagamento selecionado');
         return;
     }
 
@@ -146,19 +151,9 @@ function apagarSelecao() {
 }
 
 function pagarSelecao() {
-    const selectedIds = Array.from(document.querySelectorAll('.select-item:checked')).map(checkbox => checkbox.value);
+    const selectedIds = getSelectedIds();
     if (selectedIds.length === 0) {
-        alert('Nenhum pagamento selecionado.');
-        return;
-    }
-
-    const invalidIds = selectedIds.filter(id => {
-        const banco = document.querySelector(`tr[data-id="${id}"] .banco`).textContent.trim();
-        return !banco;
-    });
-
-    if (invalidIds.length > 0) {
-        alert('Para pagar a conta, é necessário preencher o campo Banco.');
+        alert('Nenhum pagamento selecionado');
         return;
     }
 
@@ -174,11 +169,67 @@ function pagarSelecao() {
         if (data.success) {
             location.reload();
         } else {
-            alert('Erro ao pagar seleção');
+            alert(data.message || 'Erro ao pagar seleção');
         }
     })
     .catch(error => {
         console.error('Erro:', error);
         alert('Erro ao pagar seleção');
+    });
+}
+
+function abrirSelecao() {
+    const selectedIds = getSelectedIds();
+    if (selectedIds.length === 0) {
+        alert('Nenhum pagamento selecionado');
+        return;
+    }
+
+    fetch('/abrir_selecao', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ids: selectedIds })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Erro ao abrir seleção');
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro ao abrir seleção');
+    });
+}
+
+function apagarSelecaoAnexo() {
+    const selectedIds = getSelectedIds();
+    if (selectedIds.length === 0) {
+        alert('Nenhum pagamento selecionado');
+        return;
+    }
+
+    fetch('/apagar_selecao_anexo', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ids: selectedIds })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert(data.message || 'Erro ao apagar seleção de anexos');
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro ao apagar seleção de anexos');
     });
 }
