@@ -92,38 +92,8 @@ function salvarAnexo(event, pagamentoId) {
     });
 }
 
-function downloadAnexo(pagamentoId) {
-    fetch(`/download_anexo/${pagamentoId}`)
-        .then(response => {
-            if (response.ok) {
-                return response.blob();
-            } else {
-                throw new Error('Erro ao baixar anexo');
-            }
-        })
-        .then(blob => {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = `anexo_${pagamentoId}.pdf`; // Ajuste o nome do arquivo conforme necessário
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao baixar anexo');
-        });
-}
-
-function getSelectedIds() {
-    const checkboxes = document.querySelectorAll('.select-item:checked');
-    return Array.from(checkboxes).map(checkbox => checkbox.value);
-}
-
 function apagarSelecao() {
-    const selectedIds = getSelectedIds();
+    const selectedIds = Array.from(document.querySelectorAll('.select-item:checked')).map(checkbox => checkbox.value);
     if (selectedIds.length === 0) {
         alert('Nenhum pagamento selecionado');
         return;
@@ -141,7 +111,7 @@ function apagarSelecao() {
         if (data.success) {
             location.reload();
         } else {
-            alert('Erro ao apagar seleção');
+            alert(data.message || 'Erro ao apagar seleção');
         }
     })
     .catch(error => {
@@ -151,7 +121,7 @@ function apagarSelecao() {
 }
 
 function pagarSelecao() {
-    const selectedIds = getSelectedIds();
+    const selectedIds = Array.from(document.querySelectorAll('.select-item:checked')).map(checkbox => checkbox.value);
     if (selectedIds.length === 0) {
         alert('Nenhum pagamento selecionado');
         return;
@@ -179,7 +149,7 @@ function pagarSelecao() {
 }
 
 function abrirSelecao() {
-    const selectedIds = getSelectedIds();
+    const selectedIds = Array.from(document.querySelectorAll('.select-item:checked')).map(checkbox => checkbox.value);
     if (selectedIds.length === 0) {
         alert('Nenhum pagamento selecionado');
         return;
@@ -197,7 +167,7 @@ function abrirSelecao() {
         if (data.success) {
             location.reload();
         } else {
-            alert('Erro ao abrir seleção');
+            alert(data.message || 'Erro ao abrir seleção');
         }
     })
     .catch(error => {
@@ -207,7 +177,7 @@ function abrirSelecao() {
 }
 
 function apagarSelecaoAnexo() {
-    const selectedIds = getSelectedIds();
+    const selectedIds = Array.from(document.querySelectorAll('.select-item:checked')).map(checkbox => checkbox.value);
     if (selectedIds.length === 0) {
         alert('Nenhum pagamento selecionado');
         return;
@@ -231,5 +201,57 @@ function apagarSelecaoAnexo() {
     .catch(error => {
         console.error('Erro:', error);
         alert('Erro ao apagar seleção de anexos');
+    });
+}
+
+function sortTable(n) {
+    const table = document.querySelector('.table');
+    let rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    switching = true;
+    dir = "asc";
+    while (switching) {
+        switching = false;
+        rows = table.rows;
+        for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[n];
+            y = rows[i + 1].getElementsByTagName("TD")[n];
+            if (dir == "asc") {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            } else if (dir == "desc") {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+        }
+        if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            switchcount++;
+        } else {
+            if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+            }
+        }
+    }
+    updateSortIcons(n, dir);
+}
+
+function updateSortIcons(columnIndex, direction) {
+    const headers = document.querySelectorAll('.table th');
+    headers.forEach((header, index) => {
+        const icon = header.querySelector('i');
+        if (icon) {
+            if (index === columnIndex) {
+                icon.className = direction === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down';
+            } else {
+                icon.className = 'fas fa-sort';
+            }
+        }
     });
 }
