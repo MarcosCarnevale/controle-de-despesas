@@ -277,3 +277,17 @@ def download_anexo(id):
     else:
         flash('Anexo não encontrado.', 'danger')
         return redirect(url_for('pagamento.cadastrar_pagamento'))
+    
+@pagamento_bp.route('/apagar_anexo/<int:id>', methods=['POST'])
+def apagar_anexo(id):
+    if 'user_id' not in session:
+        return jsonify({'success': False, 'message': 'Usuário não autenticado'}), 401
+
+    conn = sqlite3.connect('./contas_a_pagar/cnt_a_pg.db')
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM anexos WHERE pagamento_id = ?', (id,))
+    conn.commit()
+    conn.close()
+
+    flash('Anexo apagado com sucesso!', 'success')
+    return redirect(url_for('pagamento.cadastrar_pagamento'))

@@ -97,6 +97,11 @@
                                         <a href="{{ url_for('pagamento.download_anexo', id=pagamento[0]) }}" class="btn btn-sm btn-primary" title="Baixar Anexo">
                                             <i class="fas fa-download"></i>
                                         </a>
+                                        <form action="{{ url_for('pagamento.apagar_anexo', id=pagamento[0]) }}" method="post" style="display:inline;">
+                                            <button type="submit" class="btn btn-sm btn-danger" title="Apagar Anexo" onclick="return confirm('Tem certeza que deseja apagar este anexo?');">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </form>
                                         {% endif %}
                                     </td>
                                 </tr>
@@ -120,7 +125,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="cadastroPagamentoForm" action="{{ url_for('pagamento.cadastrar_pagamento') }}" method="post" enctype="multipart/form-data">
+                    <form id="cadastroPagamentoForm" action="{{ url_for('pagamento.cadastrar_pagamento') }}" method="post">
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="descricao">Descrição</label>
@@ -187,12 +192,6 @@
                                         <option value="{{ cartao }}">{{ cartao }}</option>
                                     {% endfor %}
                                 </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <label for="anexo"><i class="fas fa-paperclip"></i> Anexar Arquivo</label>
-                                <input type="file" id="anexo" name="anexo" class="form-control" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
                             </div>
                         </div>
                         <div class="modal-footer">
