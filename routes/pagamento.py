@@ -22,6 +22,7 @@ def cadastrar_pagamento():
         quantidade_parcelas = int(request.form['quantidade_parcelas']) if parcela == 'sim' else 1
         cartao = request.form['cartao']
         status = 'Em Aberto'
+        anexo = request.files['anexo'].read() if 'anexo' in request.files else None
 
         conn = sqlite3.connect('./contas_a_pagar/cnt_a_pg.db')
         cursor = conn.cursor()
@@ -38,7 +39,8 @@ def cadastrar_pagamento():
                 parcela TEXT NULL,
                 quantidade_parcelas INTEGER,
                 cartao TEXT,
-                status TEXT NOT NULL
+                status TEXT NOT NULL,
+                anexo BLOB
             )
         ''')
 
@@ -58,16 +60,16 @@ def cadastrar_pagamento():
                     data_pagamento = data_pagamento.replace(day=vencimento)
 
                 cursor.execute('''
-                    INSERT INTO pagamentos (descricao, valor, data, categoria, subcategoria, banco, parcela, quantidade_parcelas, cartao, status)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ''', (descricao, valor_parcela, data_pagamento.strftime('%Y-%m-%d'), categoria, subcategoria, banco, f'{i+1}/{quantidade_parcelas}', quantidade_parcelas, cartao, status))
+                    INSERT INTO pagamentos (descricao, valor, data, categoria, subcategoria, banco, parcela, quantidade_parcelas, cartao, status, anexo)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ''', (descricao, valor_parcela, data_pagamento.strftime('%Y-%m-%d'), categoria, subcategoria, banco, f'{i+1}/{quantidade_parcelas}', quantidade_parcelas, cartao, status, anexo))
 
                 data_pagamento += timedelta(days=30)
         else:
             cursor.execute('''
-                INSERT INTO pagamentos (descricao, valor, data, categoria, subcategoria, banco, parcela, quantidade_parcelas, cartao, status)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ''', (descricao, valor, data, categoria, subcategoria, banco, None, quantidade_parcelas, cartao, status))
+                INSERT INTO pagamentos (descricao, valor, data, categoria, subcategoria, banco, parcela, quantidade_parcelas, cartao, status, anexo)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (descricao, valor, data, categoria, subcategoria, banco, None, quantidade_parcelas, cartao, status, anexo))
 
         conn.commit()
         conn.close()
@@ -82,7 +84,11 @@ def cadastrar_pagamento():
     bancos = cursor.fetchall()
     cursor.execute('SELECT nome FROM cartoes')
     cartoes = cursor.fetchall()
-    cursor.execute('SELECT id, descricao, valor, data, categoria, subcategoria, banco, parcela, quantidade_parcelas, cartao, status FROM pagamentos')
+    cursor.execute('''
+        SELECT p.id, p.descricao, p.valor, p.data, p.categoria, p.subcategoria, p.banco, p.parcela, p.quantidade_parcelas, p.cartao, p.status, a.id IS NOT NULL AS has_anexo
+        FROM pagamentos p
+        LEFT JOIN anexos a ON p.id = a.pagamento_id
+    ''')
     pagamentos = cursor.fetchall()
     conn.close()
 
