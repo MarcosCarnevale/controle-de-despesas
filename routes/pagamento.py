@@ -291,3 +291,44 @@ def apagar_anexo(id):
 
     flash('Anexo apagado com sucesso!', 'success')
     return redirect(url_for('pagamento.cadastrar_pagamento'))
+
+@pagamento_bp.route('/apagar_selecao', methods=['POST'])
+def apagar_selecao():
+    if 'user_id' not in session:
+        return jsonify({'success': False, 'message': 'Usuário não autenticado'}), 401
+
+    ids = request.json.get('ids', [])
+    if not ids:
+        return jsonify({'success': False, 'message': 'Nenhum pagamento selecionado'}), 400
+
+    conn = sqlite3.connect('./contas_a_pagar/cnt_a_pg.db')
+    cursor = conn.cursor()
+    cursor.executemany('DELETE FROM pagamentos WHERE id = ?', [(id,) for id in ids])
+    conn.commit()
+    conn.close()
+
+    return jsonify({'success': True, 'message': 'Pagamentos apagados com sucesso'})
+
+@pagamento_bp.route('/pagar_selecao', methods=['POST'])
+def pagar_selecao():
+    if 'user_id' not in session:
+        return jsonify({'success': False, 'message': 'Usuário não autenticado'}), 401
+
+    ids = request.json.get('ids', [])
+    if not ids:
+        return jsonify({'success': False, 'message': 'Nenhum pagamento selecionado'}), 400
+
+    conn = sqlite3.connect('./contas_a_pagar/cnt_a_pg.db')
+    cursor = conn.cursor()
+
+    for id in ids:
+        cursor.execute('SELECT banco FROM pagamentos WHERE id = ?', (id,))
+        banco = cursor.fetchone()
+        if not banco or not banco[0]:
+            return jsonify({'success': False, 'message': f'Pagamento {id} não possui banco selecionado'}), 400
+
+    cursor.executemany('UPDATE pagamentos SET status = "Pago" WHERE id = ?', [(id,) for id in ids])
+    conn.commit()
+    conn.close()
+
+    return jsonify({'success': True, 'message': 'Pagamentos atualizados para Pago'})

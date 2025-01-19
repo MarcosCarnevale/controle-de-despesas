@@ -116,3 +116,69 @@ function downloadAnexo(pagamentoId) {
             alert('Erro ao baixar anexo');
         });
 }
+
+function apagarSelecao() {
+    const selectedIds = Array.from(document.querySelectorAll('.select-item:checked')).map(checkbox => checkbox.value);
+    if (selectedIds.length === 0) {
+        alert('Nenhum pagamento selecionado.');
+        return;
+    }
+
+    fetch('/apagar_selecao', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ids: selectedIds })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Erro ao apagar seleção');
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro ao apagar seleção');
+    });
+}
+
+function pagarSelecao() {
+    const selectedIds = Array.from(document.querySelectorAll('.select-item:checked')).map(checkbox => checkbox.value);
+    if (selectedIds.length === 0) {
+        alert('Nenhum pagamento selecionado.');
+        return;
+    }
+
+    const invalidIds = selectedIds.filter(id => {
+        const banco = document.querySelector(`tr[data-id="${id}"] .banco`).textContent.trim();
+        return !banco;
+    });
+
+    if (invalidIds.length > 0) {
+        alert('Para pagar a conta, é necessário preencher o campo Banco.');
+        return;
+    }
+
+    fetch('/pagar_selecao', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ids: selectedIds })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Erro ao pagar seleção');
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro ao pagar seleção');
+    });
+}
