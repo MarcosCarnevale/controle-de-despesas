@@ -1,0 +1,36 @@
+<h2>Cartões Cadastrados</h2>
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Banco</th>
+                <th>Limite</th>
+                <th>Data de Vencimento</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cartao in cartoes %}
+            <tr>
+                <td>{{ cartao[0] }}</td>
+                <td>{{ cartao[1] }}</td>
+                <td>{{ cartao[2] }}</td>
+                <td>{{ cartao[3] }}</td>
+                <td>{{ cartao[4] }}</td>
+                <td>
+                    <a href="{{ url_for('cartao.editar_cartao', id=cartao[0]) }}" class="btn btn-warning btn-sm" title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <form action="{{ url_for('cartao.excluir_cartao', id=cartao[0]) }}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir este cartão?');">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

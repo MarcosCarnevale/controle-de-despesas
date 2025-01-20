@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Categoria</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles_system.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles_categoria.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles_categoria.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -51,38 +50,8 @@
             </div>
         </form>
 
-        <h2>Categorias Cadastradas</h2>
-        <table class="categorias-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Operação</th>
-                    <th>Categoria</th>
-                    <th>Subcategoria</th>
-                    <th>Descrição</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for categoria in categorias %}
-                <tr>
-                    <td>{{ categoria[0] }}</td>
-                    <td>{{ categoria[1] }}</td>
-                    <td>{{ categoria[2] }}</td>
-                    <td>{{ categoria[3] }}</td>
-                    <td>{{ categoria[4] }}</td>
-                    <td>
-                        <a href="{{ url_for('categoria.editar_categoria', id=categoria[0]) }}" title="Editar"><i class="fas fa-edit"></i></a>
-                        <form action="{{ url_for('categoria.excluir_categoria', id=categoria[0]) }}" method="post" style="display:inline;">
-                            <button type="submit" style="background: none; border: none; color: inherit; cursor: pointer;" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir esta categoria?');">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <!-- Incluir a tabela -->
+        {% include './tabelas/tabela_categoria.html' %}
     </div>
 </body>
 </html>
