@@ -361,11 +361,11 @@ def apagar_selecao_anexo():
     conn = sqlite3.connect('./contas_a_pagar/cnt_a_pg.db')
     cursor = conn.cursor()
     for id in ids:
-        cursor.execute('SELECT anexo FROM pagamentos WHERE id = ?', (id,))
+        cursor.execute('SELECT id FROM anexos WHERE pagamento_id = ?', (id,))
         anexo = cursor.fetchone()
-        if not anexo or not anexo[0]:
+        if not anexo:
             return jsonify({'success': False, 'message': f'Pagamento {id} não tem anexo'}), 400
-        cursor.execute('UPDATE pagamentos SET anexo = NULL WHERE id = ?', (id,))
+        cursor.execute('DELETE FROM anexos WHERE pagamento_id = ?', (id,))
     conn.commit()
     conn.close()
 
