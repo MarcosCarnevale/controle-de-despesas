@@ -48,7 +48,15 @@
     <!-- Incluir o modal -->
     {% include './modal/modal_cadastrar_pagamento.html' %}
 
-    <script src="{{ url_for('static', filename='scripts/cadastrar_pagamento.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/cadastrar_pagamento/select_all.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/cadastrar_pagamento/modal.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/cadastrar_pagamento/parcela.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/cadastrar_pagamento/subcategoria.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/cadastrar_pagamento/status.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/cadastrar_pagamento/anexo.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/cadastrar_pagamento/selecao.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/cadastrar_pagamento/sort.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/cadastrar_pagamento/alertas.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
