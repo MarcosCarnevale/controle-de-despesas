@@ -1,0 +1,34 @@
+<h2>Bancos Cadastrados</h2>
+<table class="bancos-table">
+    <thead>
+        <tr>
+            <th>Nome do Banco</th>
+            <th>Número do Banco</th>
+            <th>Agência</th>
+            <th>Conta</th>
+            <th>DV</th>
+            <th>Tipo de Conta</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for banco in bancos %}
+        <tr>
+            <td>{{ banco[1] }}</td>
+            <td>{{ banco[2] }}</td>
+            <td>{{ banco[3] }}</td>
+            <td>{{ banco[4] }}</td>
+            <td>{{ banco[5] }}</td>
+            <td>{{ banco[6] }}</td>
+            <td>
+                <a href="{{ url_for('banco.editar_banco', id=banco[0]) }}" title="Editar"><i class="fas fa-edit"></i></a>
+                <form action="{{ url_for('banco.excluir_banco', id=banco[0]) }}" method="post" style="display:inline;">
+                    <button type="submit" style="background: none; border: none; color: inherit; cursor: pointer;" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir este banco?');">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
