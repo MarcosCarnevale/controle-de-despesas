@@ -39,6 +39,9 @@
                     <button class="btn btn-info" onclick="openFilterModal()">Filtros</button>
                 </div>
 
+                <!-- Incluir os filtros aplicados -->
+                {% include './filtros/filtros_aplicados_cadastro_pagamento.html' %}
+
                 <!-- Incluir a tabela -->
                 {% include './tabelas/tabela_pagamentos.html' %}
             </div>

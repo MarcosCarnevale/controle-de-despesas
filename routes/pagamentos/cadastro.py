@@ -73,7 +73,7 @@ def cadastrar_pagamento():
         conn.commit()
         conn.close()
         flash('Pagamento cadastrado com sucesso!', 'success')
-        return redirect(url_for('cadastro.cadastrar_pagamento'))
+        return redirect(url_for('pagamento.cadastrar_pagamento'))
 
     conn = sqlite3.connect('./contas_a_pagar/cnt_a_pg.db')
     cursor = conn.cursor()
@@ -91,7 +91,16 @@ def cadastrar_pagamento():
     pagamentos = cursor.fetchall()
     conn.close()
 
-    return render_template('cadastrar_pagamento.html', categorias=categorias, bancos=bancos, cartoes=[cartao[0] for cartao in cartoes], pagamentos=pagamentos)
+    filtros = {
+        'categoria': request.args.get('categoria', ''),
+        'subcategoria': request.args.get('subcategoria', ''),
+        'banco': request.args.get('banco', ''),
+        'cartao': request.args.get('cartao', ''),
+        'data_inicio': request.args.get('data_inicio', ''),
+        'data_fim': request.args.get('data_fim', '')
+    }
+
+    return render_template('cadastrar_pagamento.html', categorias=categorias, bancos=bancos, cartoes=[cartao[0] for cartao in cartoes], pagamentos=pagamentos, filtros=filtros)
 
 @cadastro_bp.route('/subcategorias/<categoria>', methods=['GET'])
 def subcategorias(categoria):

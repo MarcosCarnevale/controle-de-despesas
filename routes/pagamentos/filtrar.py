@@ -48,13 +48,13 @@ def filtrar_pagamento():
     pagamentos = cursor.fetchall()
     conn.close()
 
-    return render_template('cadastrar_pagamento.html', pagamentos=pagamentos, categorias=[], bancos=[], cartoes=[])
+    filtros = {
+        'categoria': categoria,
+        'subcategoria': subcategoria,
+        'banco': banco,
+        'cartao': cartao,
+        'data_inicio': data_inicio,
+        'data_fim': data_fim
+    }
 
-@filtrar_bp.route('/subcategorias/<categoria>', methods=['GET'])
-def subcategorias(categoria):
-    conn = sqlite3.connect('./contas_a_pagar/cnt_a_pg.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT DISTINCT subcategoria FROM categorias WHERE categoria = ?', (categoria,))
-    subcategorias = cursor.fetchall()
-    conn.close()
-    return jsonify({'subcategorias': [subcategoria[0] for subcategoria in subcategorias]})
+    return render_template('cadastrar_pagamento.html', pagamentos=pagamentos, filtros=filtros, categorias=[], bancos=[], cartoes=[])
