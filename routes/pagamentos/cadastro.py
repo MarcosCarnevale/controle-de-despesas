@@ -3,7 +3,7 @@ import sqlite3
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
-cadastro_bp = Blueprint('cadastro', __name__)
+cadastro_bp = Blueprint('pagamento', __name__)
 
 @cadastro_bp.route('/cadastrar_pagamento', methods=['GET', 'POST'])
 def cadastrar_pagamento():

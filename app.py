@@ -2,8 +2,8 @@ from flask import Flask
 from routes.auth import auth_bp
 from routes.banco import banco_bp
 from routes.categoria import categoria_bp
-from routes.pagamento import pagamento_bp
 from routes.cartao import cartao_bp
+from routes.pagamentos import register_blueprints
 import sqlite3
 
 app = Flask(__name__)
@@ -70,8 +70,8 @@ def initialize():
 app.register_blueprint(auth_bp)
 app.register_blueprint(banco_bp)
 app.register_blueprint(categoria_bp)
-app.register_blueprint(pagamento_bp)
 app.register_blueprint(cartao_bp)
+register_blueprints(app)
 
 if __name__ == '__main__':
     app.run(debug=True)

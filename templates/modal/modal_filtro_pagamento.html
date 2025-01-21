@@ -1,0 +1,67 @@
+<div id="modalFiltro" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Filtrar Pagamentos</h5>
+                <button type="button" class="close" onclick="closeFilterModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="filtroPagamentoForm" action="{{ url_for('filtrar.filtrar_pagamento') }}" method="get">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="filtro_categoria">Categoria</label>
+                            <select id="filtro_categoria" name="categoria" class="form-control" onchange="updateFiltroSubcategorias()">
+                                <option value="">Selecione uma categoria</option>
+                                {% for categoria in categorias %}
+                                    <option value="{{ categoria[0] }}">{{ categoria[0] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="filtro_subcategoria">Subcategoria</label>
+                            <select id="filtro_subcategoria" name="subcategoria" class="form-control">
+                                <option value="">Selecione uma subcategoria</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="filtro_banco">Banco</label>
+                            <select id="filtro_banco" name="banco" class="form-control">
+                                <option value="">Selecione um banco</option>
+                                {% for banco in bancos %}
+                                    <option value="{{ banco[1] }}">{{ banco[1] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="filtro_cartao">Cartão</label>
+                            <select id="filtro_cartao" name="cartao" class="form-control">
+                                <option value="">Selecione um cartão</option>
+                                {% for cartao in cartoes %}
+                                    <option value="{{ cartao }}">{{ cartao }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="filtro_data_inicio">Data Início</label>
+                            <input type="date" id="filtro_data_inicio" name="data_inicio" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="filtro_data_fim">Data Fim</label>
+                            <input type="date" id="filtro_data_fim" name="data_fim" class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeFilterModal()">Fechar</button>
+                        <input type="submit" class="btn btn-primary" value="Filtrar">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
