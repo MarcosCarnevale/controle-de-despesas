@@ -2,22 +2,40 @@
     <h5>Filtros Aplicados:</h5>
     <div>
         {% if filtros.categoria %}
-            <span class="badge badge-primary">Categoria: {{ filtros.categoria }} <a href="{{ url_for('pagamento.cadastrar_pagamento') }}" class="text-white ml-1">&times;</a></span>
+            <span class="badge badge-primary">
+                Categoria: {{ filtros.categoria }}
+                <a href="{{ url_for('pagamento.cadastrar_pagamento', subcategoria=filtros.subcategoria, banco=filtros.banco, cartao=filtros.cartao, data_inicio=filtros.data_inicio, data_fim=filtros.data_fim) }}" class="text-white ml-1">&times;</a>
+            </span>
         {% endif %}
         {% if filtros.subcategoria %}
-            <span class="badge badge-primary">Subcategoria: {{ filtros.subcategoria }} <a href="{{ url_for('pagamento.cadastrar_pagamento') }}" class="text-white ml-1">&times;</a></span>
+            <span class="badge badge-primary">
+                Subcategoria: {{ filtros.subcategoria }}
+                <a href="{{ url_for('pagamento.cadastrar_pagamento', categoria=filtros.categoria, banco=filtros.banco, cartao=filtros.cartao, data_inicio=filtros.data_inicio, data_fim=filtros.data_fim) }}" class="text-white ml-1">&times;</a>
+            </span>
         {% endif %}
         {% if filtros.banco %}
-            <span class="badge badge-primary">Banco: {{ filtros.banco }} <a href="{{ url_for('pagamento.cadastrar_pagamento') }}" class="text-white ml-1">&times;</a></span>
+            <span class="badge badge-primary">
+                Banco: {{ filtros.banco }}
+                <a href="{{ url_for('pagamento.cadastrar_pagamento', categoria=filtros.categoria, subcategoria=filtros.subcategoria, cartao=filtros.cartao, data_inicio=filtros.data_inicio, data_fim=filtros.data_fim) }}" class="text-white ml-1">&times;</a>
+            </span>
         {% endif %}
         {% if filtros.cartao %}
-            <span class="badge badge-primary">Cartão: {{ filtros.cartao }} <a href="{{ url_for('pagamento.cadastrar_pagamento') }}" class="text-white ml-1">&times;</a></span>
+            <span class="badge badge-primary">
+                Cartão: {{ filtros.cartao }}
+                <a href="{{ url_for('pagamento.cadastrar_pagamento', categoria=filtros.categoria, subcategoria=filtros.subcategoria, banco=filtros.banco, data_inicio=filtros.data_inicio, data_fim=filtros.data_fim) }}" class="text-white ml-1">&times;</a>
+            </span>
         {% endif %}
         {% if filtros.data_inicio %}
-            <span class="badge badge-primary">Data Início: {{ filtros.data_inicio }} <a href="{{ url_for('pagamento.cadastrar_pagamento') }}" class="text-white ml-1">&times;</a></span>
+            <span class="badge badge-primary">
+                Data Início: {{ filtros.data_inicio }}
+                <a href="{{ url_for('pagamento.cadastrar_pagamento', categoria=filtros.categoria, subcategoria=filtros.subcategoria, banco=filtros.banco, cartao=filtros.cartao, data_fim=filtros.data_fim) }}" class="text-white ml-1">&times;</a>
+            </span>
         {% endif %}
         {% if filtros.data_fim %}
-            <span class="badge badge-primary">Data Fim: {{ filtros.data_fim }} <a href="{{ url_for('pagamento.cadastrar_pagamento') }}" class="text-white ml-1">&times;</a></span>
+            <span class="badge badge-primary">
+                Data Fim: {{ filtros.data_fim }}
+                <a href="{{ url_for('pagamento.cadastrar_pagamento', categoria=filtros.categoria, subcategoria=filtros.subcategoria, banco=filtros.banco, cartao=filtros.cartao, data_inicio=filtros.data_inicio) }}" class="text-white ml-1">&times;</a>
+            </span>
         {% endif %}
     </div>
 </div>
