@@ -1,23 +1,10 @@
-from flask import Blueprint, request, redirect, url_for, session, flash, jsonify
+from flask import Blueprint, request, jsonify, session
 import sqlite3
 
 exclusao_bp = Blueprint('exclusao', __name__)
 
-@exclusao_bp.route('/excluir_pagamento/<int:id>', methods=['POST'])
-def excluir_pagamento(id):
-    if 'user_id' not in session:
-        return redirect(url_for('auth.login'))
-    
-    conn = sqlite3.connect('./contas_a_pagar/cnt_a_pg.db')
-    cursor = conn.cursor()
-    cursor.execute('DELETE FROM pagamentos WHERE id = ?', (id,))
-    conn.commit()
-    conn.close()
-    flash('Pagamento excluído com sucesso!', 'success')
-    return redirect(url_for('cadastro.cadastrar_pagamento'))
-
-@exclusao_bp.route('/apagar_selecao', methods=['POST'])
-def apagar_selecao():
+@exclusao_bp.route('/excluir_pagamentos', methods=['POST'])
+def excluir_pagamentos():
     if 'user_id' not in session:
         return jsonify({'success': False, 'message': 'Usuário não autenticado'}), 401
 
@@ -33,8 +20,8 @@ def apagar_selecao():
 
     return jsonify({'success': True})
 
-@exclusao_bp.route('/apagar_selecao_anexo', methods=['POST'])
-def apagar_selecao_anexo():
+@exclusao_bp.route('/excluir_anexos', methods=['POST'])
+def excluir_anexos():
     if 'user_id' not in session:
         return jsonify({'success': False, 'message': 'Usuário não autenticado'}), 401
 
@@ -44,12 +31,7 @@ def apagar_selecao_anexo():
 
     conn = sqlite3.connect('./contas_a_pagar/cnt_a_pg.db')
     cursor = conn.cursor()
-    for id in ids:
-        cursor.execute('SELECT id FROM anexos WHERE pagamento_id = ?', (id,))
-        anexo = cursor.fetchone()
-        if not anexo:
-            return jsonify({'success': False, 'message': f'Pagamento {id} não tem anexo'}), 400
-        cursor.execute('DELETE FROM anexos WHERE pagamento_id = ?', (id,))
+    cursor.executemany('DELETE FROM anexos WHERE pagamento_id = ?', [(id,) for id in ids])
     conn.commit()
     conn.close()
 

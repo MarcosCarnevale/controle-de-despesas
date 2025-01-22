@@ -3,6 +3,7 @@
     <table class="table table-striped table-hover">
         <thead>
             <tr>
+                <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)"></th>
                 <th>ID</th>
                 <th>Descrição</th>
                 <th>Valor</th>
@@ -20,6 +21,7 @@
         <tbody>
             {% for pagamento in pagamentos %}
             <tr>
+                <td><input type="checkbox" class="selectItem" value="{{ pagamento[0] }}"></td>
                 <td>{{ pagamento[0] }}</td>
                 <td>{{ pagamento[1] }}</td>
                 <td>{{ pagamento[2] }}</td>
@@ -35,11 +37,11 @@
                     <a href="{{ url_for('atualizacao.editar_pagamento', id=pagamento[0]) }}" class="btn btn-sm btn-warning" title="Editar">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <form action="{{ url_for('exclusao.excluir_pagamento', id=pagamento[0]) }}" method="post" style="display:inline;">
+                    <form action="{{ url_for('exclusao.excluir_pagamentos', id=pagamento[0]) }}" method="post" style="display:inline;">
                         <button type="submit" class="btn btn-sm btn-danger" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir este pagamento?');">
                             <i class="fas fa-trash-alt"></i>
                         </button>
-                    </form>
+                    </form>     
                 </td>
             </tr>
             {% endfor %}
