@@ -1,14 +1,11 @@
-function salvarAnexo(event, pagamentoId) {
-    const arquivoInput = event.target;
-    const arquivo = arquivoInput.files[0];
-    if (!arquivo) {
-        return;
-    }
+function openAnexoModal(pagamentoId) {
+    document.getElementById('pagamentoId').value = pagamentoId;
+    $('#anexoModal').modal('show');
+}
 
-    const formData = new FormData();
-    formData.append('pagamento_id', pagamentoId);
-    formData.append('arquivo', arquivo);
-
+document.getElementById('formSalvarAnexo').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const formData = new FormData(this);
     fetch('/salvar_anexo', {
         method: 'POST',
         body: formData
@@ -19,11 +16,11 @@ function salvarAnexo(event, pagamentoId) {
             alert('Anexo salvo com sucesso!');
             location.reload();
         } else {
-            alert('Erro ao salvar anexo');
+            alert('Erro ao salvar anexo: ' + data.message);
         }
     })
     .catch(error => {
         console.error('Erro:', error);
-        alert('Erro ao salvar anexo');
+        alert('Erro ao salvar anexo: ' + error.message);
     });
-}
+});
