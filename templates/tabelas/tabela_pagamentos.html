@@ -58,54 +58,6 @@
 </div>
 
 <!-- Modal para Upload de Anexo -->
-<div class="modal fade" id="anexoModal" tabindex="-1" role="dialog" aria-labelledby="anexoModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="anexoModalLabel">Anexar Arquivo</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="formSalvarAnexo" enctype="multipart/form-data">
-                    <input type="hidden" id="pagamentoId" name="pagamento_id">
-                    <div class="form-group">
-                        <label for="arquivo">Adicionar Anexo</label>
-                        <input type="file" class="form-control" id="arquivo" name="arquivo" required>
-                    </div>
-                    <button type="submit" class="btn btn-success">Salvar Anexo</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+{% include './modal/modal_anexo.html' %}
 
-<script>
-function openAnexoModal(pagamentoId) {
-    document.getElementById('pagamentoId').value = pagamentoId;
-    $('#anexoModal').modal('show');
-}
-
-document.getElementById('formSalvarAnexo').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const formData = new FormData(this);
-    fetch('/salvar_anexo', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Anexo salvo com sucesso!');
-            location.reload();
-        } else {
-            alert('Erro ao salvar anexo: ' + data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Erro:', error);
-        alert('Erro ao salvar anexo: ' + error.message);
-    });
-});
-</script>
+<script src="{{ url_for('static', filename='scripts/cadastrar_pagamento/modal.js') }}"></script>
