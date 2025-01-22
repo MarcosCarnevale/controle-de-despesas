@@ -82,9 +82,7 @@ def pagar_pagamentos():
         invalid_ids = [str(row[0]) for row in cursor.fetchall()]
         
         # Se existirem pagamentos sem banco associado
-        # if 1==1: #
         if invalid_ids != []:
-        # if len(invalid_ids) > 0:
             # Se algum pagamento não possuir um banco associado, retornar erro
             # e informar quais pagamentos não possuem banco associado
             # O status HTTP 422 é utilizado para indicar que a requisição foi bem sucedida, mas o servidor não pode processar a entidade enviada
@@ -102,3 +100,20 @@ def pagar_pagamentos():
         return jsonify({'success': False, 'message': str(e)}), 500
     finally:
         conn.close()
+
+@atualizacao_bp.route('/abrir_pagamentos', methods=['POST'])
+def abrir_pagamentos():
+    if 'user_id' not in session:
+        return jsonify({'success': False, 'message': 'Usuário não autenticado'}), 401
+
+    ids = request.json.get('ids', [])
+    if not ids:
+        return jsonify({'success': False, 'message': 'Nenhum pagamento selecionado'}), 400
+
+    conn = sqlite3.connect('./contas_a_pagar/cnt_a_pg.db')
+    cursor = conn.cursor()
+    cursor.executemany('UPDATE pagamentos SET status = "Em aberto" WHERE id = ?', [(id,) for id in ids])
+    conn.commit()
+    conn.close()
+
+    return jsonify({'success': True, 'ids': ids, 'message': 'Pagamentos abertos com sucesso!'})

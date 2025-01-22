@@ -73,11 +73,35 @@ function apagarSelecao() {
 }
 
 function abrirSelecao() {
-    let selectedItems = getSelectedItems();
-    if (selectedItems.length > 0) {
-        // Implementar a lógica para abrir os itens selecionados
-        console.log('Abrir:', selectedItems);
-        // Aqui você pode fazer uma chamada AJAX para abrir os itens selecionados
+    let selectedIds = getSelectedItems();
+    if (selectedIds.length > 0) {
+        if (confirm('Tem certeza que deseja marcar os pagamentos selecionados como "Em Aberto"?')) {
+            fetch('/abrir_pagamentos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ids: selectedIds })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Pagamentos marcados como "Em aberto" com sucesso.');
+                    location.reload();
+                } else {
+                    alert(
+                        'Erro ao marcar como "Em aberto":\n' 
+                        + data.message
+                        + '\n\nIDs dos pagamentos que não possuem banco associado:\n'
+                        + data.ids)
+
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao marcar pagamentos como "Em aberto": ' + error.message);
+            });
+        }
     } else {
         alert('Nenhum pagamento selecionado.');
     }
