@@ -91,4 +91,4 @@ def apagar_anexo(id):
     conn.close()
 
     flash('Anexo apagado com sucesso!', 'success')
-    return redirect(url_for('cadastro.cadastrar_pagamento'))
+    return jsonify({'success': True, 'message': 'Anexo apagado com sucesso!'})

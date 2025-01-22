@@ -50,6 +50,12 @@
                     <button class="btn btn-sm btn-info" title="Anexos" onclick="openAnexoModal({{ pagamento[0] }})">
                         <i class="fas fa-paperclip"></i>
                     </button>
+                </button>
+                {% if pagamento[11] %} <!-- Verifica se o pagamento tem anexo -->
+                <button class="btn btn-sm btn-danger" title="Excluir Anexo" onclick="excluirAnexo({{ pagamento[0] }})">
+                    <i class="fas fa-times"></i>
+                </button>
+                {% endif %} 
                 </td>
             </tr>
             {% endfor %}
