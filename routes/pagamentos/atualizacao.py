@@ -44,6 +44,21 @@ def editar_pagamento(id):
 
     return render_template('editar_pagamento.html', pagamento=pagamento, categorias=categorias, bancos=bancos, cartoes=[cartao[0] for cartao in cartoes], subcategorias=subcategorias)
 
+@atualizacao_bp.route('/pagar_pagamento/<int:id>', methods=['POST'])
+def pagar_pagamento(id):
+    conn = sqlite3.connect('./contas_a_pagar/cnt_a_pg.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT banco FROM pagamentos WHERE id = ?', (id,))
+    banco = cursor.fetchone()[0]
+    if not banco:
+        flash('O pagamento não possui um banco associado', 'danger')
+        return redirect(url_for('cadastro.cadastrar_pagamento'))
+
+    cursor.execute('UPDATE pagamentos SET status = "Pago" WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    flash('Pagamento pago com sucesso!', 'success')
+    return redirect(url_for('pagamento.cadastrar_pagamento'))
 
 @atualizacao_bp.route('/pagar_pagamentos', methods=['POST'])
 def pagar_pagamentos():

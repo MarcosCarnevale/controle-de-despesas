@@ -34,6 +34,11 @@
                 <td>{{ pagamento[9] }}</td>
                 <td>{{ pagamento[10] }}</td>
                 <td>
+                    <form action="{{ url_for('atualizacao.pagar_pagamento', id=pagamento[0]) }}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-success" title="Pagar" onclick="return confirm('Tem certeza que deseja pagar este pagamento?');">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </form>
                     <a href="{{ url_for('atualizacao.editar_pagamento', id=pagamento[0]) }}" class="btn btn-sm btn-warning" title="Editar">
                         <i class="fas fa-edit"></i>
                     </a>
@@ -41,10 +46,66 @@
                         <button type="submit" class="btn btn-sm btn-danger" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir este pagamento?');">
                             <i class="fas fa-trash-alt"></i>
                         </button>
-                    </form>     
+                    </form>
+                    <button class="btn btn-sm btn-info" title="Anexos" onclick="openAnexoModal({{ pagamento[0] }})">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+
+<!-- Modal para Upload de Anexo -->
+<div class="modal fade" id="anexoModal" tabindex="-1" role="dialog" aria-labelledby="anexoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="anexoModalLabel">Anexar Arquivo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formSalvarAnexo" enctype="multipart/form-data">
+                    <input type="hidden" id="pagamentoId" name="pagamento_id">
+                    <div class="form-group">
+                        <label for="arquivo">Adicionar Anexo</label>
+                        <input type="file" class="form-control" id="arquivo" name="arquivo" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Salvar Anexo</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openAnexoModal(pagamentoId) {
+    document.getElementById('pagamentoId').value = pagamentoId;
+    $('#anexoModal').modal('show');
+}
+
+document.getElementById('formSalvarAnexo').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const formData = new FormData(this);
+    fetch('/salvar_anexo', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Anexo salvo com sucesso!');
+            location.reload();
+        } else {
+            alert('Erro ao salvar anexo: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro ao salvar anexo: ' + error.message);
+    });
+});
+</script>

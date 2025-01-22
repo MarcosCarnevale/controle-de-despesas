@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, redirect, url_for, session, flash
 import sqlite3
 from datetime import datetime
 import io
+import base64
 
 anexo_bp = Blueprint('anexo', __name__)
 
@@ -16,7 +17,9 @@ def salvar_anexo():
     tipo_arquivo = arquivo.content_type
     tamanho_arquivo = len(arquivo.read())
     arquivo.seek(0)  # Reset file pointer to the beginning
-    arquivo_blob = arquivo.read()
+    # arquivo_blob = arquivo.read()
+    arquivo_blob = base64.b64encode(arquivo.read()) # Encode file to base64
+    nome_arquivo = arquivo.filename
 
     conn = sqlite3.connect('./contas_a_pagar/cnt_a_pg.db')
     cursor = conn.cursor()
@@ -28,7 +31,8 @@ def salvar_anexo():
             data_upload TEXT NOT NULL,
             tipo_arquivo TEXT NOT NULL,
             tamanho_arquivo INTEGER NOT NULL,
-            arquivo BLOB NOT NULL,
+            arquivo TEXT NOT NULL,
+            nome_arquivo TEXT,
             FOREIGN KEY (pagamento_id) REFERENCES pagamentos (id)
         )
     ''')
@@ -41,15 +45,15 @@ def salvar_anexo():
         # Atualizar o anexo existente
         cursor.execute('''
             UPDATE anexos
-            SET data_upload = ?, tipo_arquivo = ?, tamanho_arquivo = ?, arquivo = ?
+            SET data_upload = ?, tipo_arquivo = ?, tamanho_arquivo = ?, arquivo = ?, nome_arquivo = ?
             WHERE pagamento_id = ?
-        ''', (data_upload, tipo_arquivo, tamanho_arquivo, arquivo_blob, pagamento_id))
+        ''', (data_upload, tipo_arquivo, tamanho_arquivo, arquivo_blob, nome_arquivo, pagamento_id))
     else:
         # Inserir um novo anexo
         cursor.execute('''
-            INSERT INTO anexos (pagamento_id, data_upload, tipo_arquivo, tamanho_arquivo, arquivo)
-            VALUES (?, ?, ?, ?, ?)
-        ''', (pagamento_id, data_upload, tipo_arquivo, tamanho_arquivo, arquivo_blob))
+            INSERT INTO anexos (pagamento_id, data_upload, tipo_arquivo, tamanho_arquivo, arquivo, nome_arquivo)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (pagamento_id, data_upload, tipo_arquivo, tamanho_arquivo, arquivo_blob, nome_arquivo))
 
     conn.commit()
     conn.close()
@@ -60,16 +64,16 @@ def salvar_anexo():
 def download_anexo(id):
     conn = sqlite3.connect('./contas_a_pagar/cnt_a_pg.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT arquivo, tipo_arquivo FROM anexos WHERE pagamento_id = ?', (id,))
+    cursor.execute('SELECT arquivo, tipo_arquivo, nome_arquivo FROM anexos WHERE pagamento_id = ?', (id,))
     anexo = cursor.fetchone()
     conn.close()
 
     if anexo and anexo[0]:
         return send_file(
-            io.BytesIO(anexo[0]),
+            io.BytesIO(base64.b64decode(anexo[0])),
             mimetype=anexo[1],
             as_attachment=True,
-            attachment_filename=f'anexo_{id}.{anexo[1].split("/")[-1]}'  # Define o nome do arquivo com base no tipo de arquivo
+            attachment_filename=anexo[2]
         )
     else:
         flash('Anexo não encontrado.', 'danger')
