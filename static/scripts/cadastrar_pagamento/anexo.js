@@ -45,3 +45,15 @@ function excluirAnexo(pagamentoId) {
         });
     }
 }
+
+function downloadAnexo(pagamentoId) {
+    fetch(`/download_anexo/${pagamentoId}`)
+        .then(response => {
+            if (response.ok) {
+                alert('Download iniciado.');
+            }
+            else {
+                alert('Erro ao iniciar download: ' + response.statusText);
+            }
+        })
+}

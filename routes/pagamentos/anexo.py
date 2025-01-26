@@ -1,8 +1,7 @@
-from flask import Blueprint, request, jsonify, redirect, url_for, session, flash, send_file
+from flask import Blueprint, request, jsonify, redirect, url_for, session, flash, send_file, make_response
 import sqlite3
 from datetime import datetime
 import io
-import base64
 
 anexo_bp = Blueprint('anexo', __name__)
 
@@ -17,8 +16,7 @@ def salvar_anexo():
     tipo_arquivo = arquivo.content_type
     tamanho_arquivo = len(arquivo.read())
     arquivo.seek(0)  # Reset file pointer to the beginning
-    # arquivo_blob = arquivo.read()
-    arquivo_blob = base64.b64encode(arquivo.read()) # Encode file to base64
+    arquivo_blob = arquivo.read()
     nome_arquivo = arquivo.filename
 
     conn = sqlite3.connect('./contas_a_pagar/cnt_a_pg.db')
@@ -31,7 +29,7 @@ def salvar_anexo():
             data_upload TEXT NOT NULL,
             tipo_arquivo TEXT NOT NULL,
             tamanho_arquivo INTEGER NOT NULL,
-            arquivo TEXT NOT NULL,
+            arquivo BLOB NOT NULL,
             nome_arquivo TEXT,
             FOREIGN KEY (pagamento_id) REFERENCES pagamentos (id)
         )
@@ -60,7 +58,7 @@ def salvar_anexo():
 
     return jsonify({'success': True, 'message': 'Anexo salvo com sucesso!'})
 
-@anexo_bp.route('/download_anexo/<int:id>')
+@anexo_bp.route('/download_anexo/<int:id>', methods=['GET'])
 def download_anexo(id):
     conn = sqlite3.connect('./contas_a_pagar/cnt_a_pg.db')
     cursor = conn.cursor()
@@ -68,16 +66,16 @@ def download_anexo(id):
     anexo = cursor.fetchone()
     conn.close()
 
-    if anexo and anexo[0]:
-        return send_file(
-            io.BytesIO(base64.b64decode(anexo[0])),
-            mimetype=anexo[1],
-            as_attachment=True,
-            attachment_filename=anexo[2]
-        )
+    if not anexo:
+        return jsonify({'success': False, 'message': 'Anexo não encontrado'}), 404
+
     else:
-        flash('Anexo não encontrado.', 'danger')
-        return redirect(url_for('cadastro.cadastrar_pagamento'))
+        return send_file(
+            path_or_file=io.BytesIO(anexo[0]),
+            as_attachment=True,
+            mimetype=anexo[1],
+            download_name=anexo[2]
+        )
     
 @anexo_bp.route('/apagar_anexo/<int:id>', methods=['POST'])
 def apagar_anexo(id):
@@ -90,5 +88,4 @@ def apagar_anexo(id):
     conn.commit()
     conn.close()
 
-    flash('Anexo apagado com sucesso!', 'success')
     return jsonify({'success': True, 'message': 'Anexo apagado com sucesso!'})
