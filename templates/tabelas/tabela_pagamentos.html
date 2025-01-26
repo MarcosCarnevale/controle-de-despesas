@@ -4,17 +4,17 @@
         <thead>
             <tr>
                 <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)"></th>
-                <th>ID</th>
-                <th>Descrição</th>
-                <th>Valor</th>
-                <th>Data</th>
-                <th>Categoria</th>
-                <th>Subcategoria</th>
-                <th>Banco</th>
-                <th>Parcela</th>
-                <th>Quantidade de Parcelas</th>
-                <th>Cartão</th>
-                <th>Status</th>
+                <th onclick="sortTable(1)">ID <i class="fas fa-sort"></i></th>
+                <th onclick="sortTable(2)">Descrição <i class="fas fa-sort"></i></th>
+                <th onclick="sortTable(3)">Valor <i class="fas fa-sort"></i></th>
+                <th onclick="sortTable(4)">Data <i class="fas fa-sort"></i></th>
+                <th onclick="sortTable(5)">Categoria <i class="fas fa-sort"></i></th>
+                <th onclick="sortTable(6)">Subcategoria <i class="fas fa-sort"></i></th>
+                <th onclick="sortTable(7)">Banco <i class="fas fa-sort"></i></th>
+                <th onclick="sortTable(8)">Parcela <i class="fas fa-sort"></i></th>
+                <th onclick="sortTable(9)">Quantidade de Parcelas <i class="fas fa-sort"></i></th>
+                <th onclick="sortTable(10)">Cartão <i class="fas fa-sort"></i></th>
+                <th onclick="sortTable(11)">Status <i class="fas fa-sort"></i></th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -50,17 +50,14 @@
                     <button class="btn btn-sm btn-info" title="Anexos" onclick="openAnexoModal({{ pagamento[0] }})">
                         <i class="fas fa-paperclip"></i>
                     </button>
-                </button>
-                {% if pagamento[11] %} <!-- Verifica se o pagamento tem anexo -->
-                <button class="btn btn-sm btn-danger" title="Excluir Anexo" onclick="excluirAnexo({{ pagamento[0] }})">
-                    <i class="fas fa-times"></i>
-                </button>
-                <form action="{{ url_for('anexo.download_anexo', id=pagamento[0]) }}" method="get" style="display:inline;">
-                    <button type="submit" class="btn btn-sm btn-info" title="Download Anexo">
+                    {% if pagamento[11] %} <!-- Verifica se o pagamento tem anexo -->
+                    <button class="btn btn-sm btn-danger" title="Excluir Anexo" onclick="excluirAnexo({{ pagamento[0] }})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button class="btn btn-sm btn-success" title="Baixar Anexo" onclick="downloadAnexo({{ pagamento[0] }})">
                         <i class="fas fa-download"></i>
                     </button>
-                </form>
-                {% endif %} 
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
