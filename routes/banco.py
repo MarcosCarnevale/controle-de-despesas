@@ -34,7 +34,7 @@ def cadastrar_banco():
         try:
             cursor.execute('''
                 INSERT INTO bancos (nome, numero, agencia, conta, dv, tipo_conta)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?)
             ''', (nome_banco, numero_banco, agencia, conta, dv, tipo_conta))
             conn.commit()
         except sqlite3.IntegrityError:
