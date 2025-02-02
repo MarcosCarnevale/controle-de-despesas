@@ -11,7 +11,7 @@
 <body>
     <div class="container mt-5">
         <h1>Editar Pagamento</h1>
-        <form action="{{ url_for('pagamento.editar_pagamento', id=pagamento[0]) }}" method="post">
+        <form action="{{ url_for('pagamento.cadastrar_pagamento', id=pagamento[0]) }}" method="post">
             <div class="form-group">
                 <label for="descricao">Descrição</label>
                 <input type="text" id="descricao" name="descricao" class="form-control" value="{{ pagamento[1] }}" required>

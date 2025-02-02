@@ -34,21 +34,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    $('#editarCartaoModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var id = button.data('id');
-        var nome = button.data('nome');
-        var numero = button.data('numero');
-        var dataFechamento = button.data('data_fechamento');
-        var dataVencimento = button.data('data_vencimento');
-
-        var modal = $(this);
-        modal.find('#edit_nome').val(nome);
-        modal.find('#edit_numero').val(numero);
-        modal.find('#edit_data_fechamento').val(dataFechamento);
-        modal.find('#edit_data_vencimento').val(dataVencimento);
-        modal.find('#editarCartaoForm').attr('action', '/editar_cartao/' + id);
-    });
-</script>

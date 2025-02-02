@@ -68,6 +68,7 @@ def editar_cartao(id):
         ''', (nome, numero, data_fechamento, data_vencimento, id))
         conn.commit()
         conn.close()
+
         flash('Cartão atualizado com sucesso!', 'success')
         return redirect(url_for('cartao.cadastrar_cartao'))
 
