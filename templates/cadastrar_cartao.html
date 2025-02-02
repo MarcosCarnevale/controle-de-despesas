@@ -33,16 +33,16 @@
                     <input type="text" id="nome" name="nome" class="form-control" placeholder="Digite o nome do cartão" required>
                 </div>
                 <div class="form-group">
-                    <label for="banco">Banco</label>
-                    <input type="text" id="banco" name="banco" class="form-control" placeholder="Digite o banco" required>
+                    <label for="numero">Número</label>
+                    <input type="text" id="numero" name="numero" class="form-control" placeholder="Digite o número do cartão" required>
                 </div>
                 <div class="form-group">
-                    <label for="limite">Limite</label>
-                    <input type="number" id="limite" name="limite" class="form-control" placeholder="Digite o limite" required>
+                    <label for="data_fechamento">Data de Fechamento</label>
+                    <input type="number" id="data_fechamento" name="data_fechamento" class="form-control" placeholder="Digite a data de fechamento" required>
                 </div>
                 <div class="form-group">
                     <label for="data_vencimento">Data de Vencimento</label>
-                    <input type="date" id="data_vencimento" name="data_vencimento" class="form-control" required>
+                    <input type="number" id="data_vencimento" name="data_vencimento" class="form-control" placeholder="Digite a data de vencimento" required>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Cadastrar" class="btn btn-primary">
@@ -53,5 +53,3 @@
             {% include './tabelas/tabela_cartoes.html' %}
         </div>
     </div>
-</body>
-</html>

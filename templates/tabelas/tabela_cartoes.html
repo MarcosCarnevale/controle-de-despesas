@@ -5,8 +5,8 @@
             <tr>
                 <th>ID</th>
                 <th>Nome</th>
-                <th>Banco</th>
-                <th>Limite</th>
+                <th>Número</th>
+                <th>Data de Fechamento</th>
                 <th>Data de Vencimento</th>
                 <th>Ações</th>
             </tr>
@@ -20,7 +20,7 @@
                 <td>{{ cartao[3] }}</td>
                 <td>{{ cartao[4] }}</td>
                 <td>
-                    <a href="{{ url_for('cartao.editar_cartao', id=cartao[0]) }}" class="btn btn-warning btn-sm" title="Editar">
+                    <a href="#" class="btn btn-warning btn-sm" title="Editar" data-toggle="modal" data-target="#editarCartaoModal" data-id="{{ cartao[0] }}" data-nome="{{ cartao[1] }}" data-numero="{{ cartao[2] }}" data-data_fechamento="{{ cartao[3] }}" data-data_vencimento="{{ cartao[4] }}">
                         <i class="fas fa-edit"></i>
                     </a>
                     <form action="{{ url_for('cartao.excluir_cartao', id=cartao[0]) }}" method="post" style="display:inline;">
@@ -34,3 +34,6 @@
         </tbody>
     </table>
 </div>
+
+<!-- Incluir modal -->
+{% include './modal/modal_editar_cartao.html' %}
