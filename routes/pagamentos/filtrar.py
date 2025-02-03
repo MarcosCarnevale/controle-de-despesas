@@ -8,10 +8,12 @@ def filtrar_pagamento():
     if 'user_id' not in session:
         return redirect(url_for('auth.login'))
 
+    id = request.args.get('id', '')
     categoria = request.args.get('categoria', '')
     subcategoria = request.args.get('subcategoria', '')
     banco = request.args.get('banco', '')
     cartao = request.args.get('cartao', '')
+    status = request.args.get('status', '')
     data_inicio = request.args.get('data_inicio', '')
     data_fim = request.args.get('data_fim', '')
 
@@ -23,6 +25,9 @@ def filtrar_pagamento():
     '''
     params = []
 
+    if id:
+        query += ' AND p.id = ?'
+        params.append(id)
     if categoria:
         query += ' AND p.categoria = ?'
         params.append(categoria)
@@ -35,6 +40,9 @@ def filtrar_pagamento():
     if cartao:
         query += ' AND p.cartao = ?'
         params.append(cartao)
+    if status:
+        query += ' AND p.status = ?'
+        params.append(status)
     if data_inicio:
         query += ' AND p.data >= ?'
         params.append(data_inicio)
@@ -49,12 +57,14 @@ def filtrar_pagamento():
     conn.close()
 
     filtros = {
+        'id': id,
         'categoria': categoria,
         'subcategoria': subcategoria,
         'banco': banco,
         'cartao': cartao,
+        'status': status,
         'data_inicio': data_inicio,
         'data_fim': data_fim
     }
 
-    return render_template('cadastrar_pagamento.html', pagamentos=pagamentos, filtros=filtros, categorias=[], bancos=[], cartoes=[])
+    return render_template('cadastrar_pagamento.html', pagamentos=pagamentos, filtros=filtros, id=id, categoria=categoria, subcategoria=subcategoria, banco=banco, cartao=cartao, status=status, data_inicio=data_inicio, data_fim=data_fim)

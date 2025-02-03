@@ -37,5 +37,17 @@
                 <a href="{{ url_for('pagamento.cadastrar_pagamento', categoria=filtros.categoria, subcategoria=filtros.subcategoria, banco=filtros.banco, cartao=filtros.cartao, data_inicio=filtros.data_inicio) }}" class="text-white ml-1">&times;</a>
             </span>
         {% endif %}
+        {% if filtros.status %}
+            <span class="badge badge-primary">
+                Status: {{ filtros.status }}
+                <a href="{{ url_for('pagamento.cadastrar_pagamento', categoria=filtros.categoria, subcategoria=filtros.subcategoria, banco=filtros.banco, cartao=filtros.cartao, data_inicio=filtros.data_inicio, data_fim=filtros.data_fim) }}" class="text-white ml-1">&times;</a>
+            </span>
+        {% endif %}
+        {% if filtros.id %}
+            <span class="badge badge-primary">
+                ID: {{ filtros.id }}
+                <a href="{{ url_for('pagamento.cadastrar_pagamento', categoria=filtros.categoria, subcategoria=filtros.subcategoria, banco=filtros.banco, cartao=filtros.cartao, data_inicio=filtros.data_inicio, data_fim=filtros.data_fim, status=filtros.status) }}" class="text-white ml-1">&times;</a>
+            </span>
+        {% endif %}
     </div>
 </div>

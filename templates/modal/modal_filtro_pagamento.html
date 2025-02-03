@@ -8,8 +8,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="filtroPagamentoForm" action="{{ url_for('filtrar.filtrar_pagamento') }}" method="get">
+                <form id="filtroPagamentoForm" action="{{ url_for('filtrar.filtrar_pagamento') }}" method="get">    
                     <div class="form-row">
+                        <div class="form-group
+                            col-md-6">
+                            <label for="filtro_id">ID</label>
+                            <input type="text" id="filtro_id" name="id" class="form-control">
+                        </div>
+
                         <div class="form-group col-md-6">
                             <label for="filtro_categoria">Categoria</label>
                             <select id="filtro_categoria" name="categoria" class="form-control" onchange="updateFiltroSubcategorias()">
@@ -46,6 +52,16 @@
                             </select>
                         </div>
                     </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="filtro_status">Status</label>
+                            <select id="filtro_status" name="status" class="form-control">
+                                <option value="">Selecione um status</option>
+                                <option value="Pago">Pago</option>
+                                <option value="Em aberto">Em aberto</option>
+                                <option value="Em atraso">Em atraso</option>
+                            </select>
+                        </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="filtro_data_inicio">Data Início</label>
